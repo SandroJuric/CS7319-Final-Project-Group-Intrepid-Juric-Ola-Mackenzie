@@ -1,0 +1,454 @@
+/* Global Reset & Body Styling */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(135deg, #2b225a, #4f44e0);
+  color: #fff;
+}
+
+/* Ensure root takes full height if necessary for percentage heights */
+#root {
+  height: 100%;
+}
+
+/* Container for Dashboard pages */
+.dashboard-container {
+  width: 100vw;
+  /* If dashboard-container needs to encompass full height, add: */
+  min-height: 100vh; 
+  display: flex;        /* Keep flex for vertical structure */
+  flex-direction: column; /* Stack header and content vertically */
+}
+
+/* Topbar */
+.dashboard-header {
+  background-color: #2b225a;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem; 
+  flex-shrink: 0; /* Prevent header from shrinking */
+}
+.topbar-container {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  position: relative;
+  max-width: 1200px; /* Optional: Limit width on large screens */
+  margin: 0 auto;    /* Center container if max-width is set */
+}
+.top-logo {
+  width: 150px;
+  height: auto;
+  cursor: pointer; /* Make logo clickable */
+}
+.back-btn,
+.logout-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.25rem; /* Slightly larger click area */
+  line-height: 1; /* Better icon alignment */
+}
+.back-btn:hover, 
+.logout-btn:hover {
+  opacity: 0.8;
+}
+.back-btn {
+  left: 1rem;
+}
+.logout-btn {
+  right: 1rem;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #6c63ff;
+  padding: 1rem;
+  width: 220px; /* Original width */
+  flex-shrink: 0; /* Prevent sidebar shrinking */
+  /* Let height be determined by flex container, remove fixed 100vh */
+  /* height: 100vh; */ 
+  overflow-y: auto; /* Add scroll if content overflows */
+}
+.sidebar-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  background-color: #fff;
+  color: #6c63ff;
+  border: 1px solid #6c63ff;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-align: left; /* Ensure text aligns left */
+}
+.menu-btn:hover {
+  background-color: #f0f0f0;
+}
+
+/* Main Content Area */
+.dashboard-content {
+  display: flex; /* This makes sidebar and main content side-by-side */
+  flex-grow: 1; /* Allows this section to fill remaining vertical space */
+  overflow: hidden; /* Prevents potential parent scroll issues */
+}
+.dashboard-main {
+  flex-grow: 1; /* Allows main content to fill remaining horizontal space */
+  padding: 1.5rem; /* Increased padding slightly */
+  overflow-y: auto; /* Allows ONLY main content area to scroll */
+}
+.dashboard-main h2 {
+  margin-top: 0; /* Remove default heading margin */
+}
+
+/* Chat List & Rows (applied by ActiveChats/ArchivedChats) */
+.chat-list { 
+  /* No specific styles needed currently */
+}
+.user-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  cursor: pointer; /* Make entire row indicate clickability */
+  transition: background-color 0.2s ease;
+}
+.user-row:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+.user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Added for text overflow */
+  overflow: hidden; 
+  margin-right: 1rem; /* Space between text and icon */
+}
+.user-name {
+  font-size: 1rem;
+  font-weight: 500; /* Slightly bolder name */
+  /* Added for text overflow */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chat-recent-message {
+  margin-top: 0.3rem; /* Smaller gap */
+  font-size: 0.85rem; /* Slightly smaller text */
+  color: #ccc;
+  /* Added for text overflow */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Status Dot (If you re-introduce it later) */
+/* .status-dot { ... } */
+/* .status-dot.online { ... } */
+/* .status-dot.offline { ... } */
+
+/* History/Delete Icon Container */
+.history-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  flex-shrink: 0; /* Prevent icon shrinking */
+  padding: 0.1rem; /* Small padding for easier click */
+}
+.history-icon:hover {
+  color: #ccc; /* Original hover color */
+  transform: scale(1.1);
+}
+
+/* Delete Icon Specific Style (Red X for Archived) */
+.delete-icon {
+  color: #ff4d4d; /* Less harsh red */
+  font-weight: bold;
+  font-size: 1.5rem; /* Match history icon size */
+  line-height: 1; /* Align 'x' better vertically */
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  padding: 0.1rem; /* Small padding for click area */
+}
+.delete-icon:hover {
+  color: #ff8080; /* Lighter red on hover */
+  transform: scale(1.1);
+}
+
+
+/* Error and No Data Messages */
+.error-msg,
+.no-data {
+  text-align: center;
+  margin-top: 1.5rem; /* Increased spacing */
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.05); /* Subtle background */
+  border-radius: 0.5rem;
+  font-size: 1rem; /* Adjusted size */
+}
+.error-msg {
+    color: #ff9999; /* More visible error color */
+    border: 1px solid rgba(255, 128, 128, 0.4);
+}
+.no-data {
+    color: #ccc; 
+}
+
+
+/***********************************************************/
+/* === START: Styles for New Chat FAB and Modal === */
+/***********************************************************/
+
+/* Floating Action Button (FAB) */
+.fab {
+  position: fixed; /* Sticks to the viewport */
+  bottom: 2rem;    /* Distance from bottom */
+  right: 2rem;     /* Distance from right */
+  width: 56px;     /* Standard FAB size */
+  height: 56px;    /* Standard FAB size */
+  background-color: #6c63ff; /* Match sidebar accent */
+  color: #fff;
+  border: none;
+  border-radius: 50%; /* Makes it circular */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem; /* Size of the '+' icon */
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); /* Drop shadow */
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  z-index: 1000; /* Ensure it's above other page content */
+}
+.fab:hover {
+  background-color: #584fdb; /* Slightly darker on hover */
+  transform: scale(1.05);     /* Slightly enlarge on hover */
+}
+.fab:active {
+  transform: scale(0.98); /* Slightly shrink when clicked */
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed; /* Cover the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.65); /* Darker overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; /* Above FAB */
+  padding: 1rem; /* Prevent content touching edges on small screens */
+  /* Optional fade-in animation */
+  /* animation: fadeIn 0.3s ease; */
+}
+
+/* @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } */
+
+.modal-content {
+  background: linear-gradient(135deg, #312868, #5349e6); /* Modal gradient */
+  padding: 1.5rem 2rem; /* More horizontal padding */
+  border-radius: 8px;
+  color: #fff;
+  width: 90%; /* Relative width */
+  max-width: 450px; /* Max width */
+  position: relative; /* For positioning the close button */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  max-height: 80vh; /* Limit height */
+  display: flex; /* Use flex for vertical structure inside modal */
+  flex-direction: column;
+  /* Optional pop-in animation */
+  /* animation: scaleUp 0.3s ease-out; */
+}
+
+/* @keyframes scaleUp { from { transform: scale(0.9); opacity: 0.5; } to { transform: scale(1); opacity: 1; } } */
+
+.modal-close-btn {
+  position: absolute;
+  top: 0.8rem; /* Adjust position */
+  right: 0.8rem; /* Adjust position */
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.8rem; 
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.25rem;
+  transition: color 0.2s ease;
+}
+.modal-close-btn:hover {
+  color: #fff;
+}
+.modal-title {
+  margin: 0 0 1.5rem 0; /* Adjusted margin */
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+.user-list-modal {
+  overflow-y: auto; /* Enable scrolling for the list if needed */
+  flex-grow: 1; /* Allow list to take available space */
+  margin: 0 -0.5rem; /* Counteract padding for scrollbar */
+  padding: 0 0.5rem; /* Add padding back */
+}
+.user-row-modal {
+  display: flex; 
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: rgba(255, 255, 255, 0.08); /* Slightly different background */
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem; 
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.user-row-modal:hover {
+  background-color: rgba(255, 255, 255, 0.18); /* Lighter hover */
+}
+/* Ensure user name in modal doesn't use ellipsis from .user-name */
+.user-row-modal .user-name { 
+   white-space: normal; /* Allow wrapping */
+   overflow: visible;
+   text-overflow: clip;
+   font-weight: 400; /* Normal weight */
+}
+
+/***********************************************************/
+/* === END: Styles for New Chat FAB and Modal === */
+/***********************************************************/
+
+
+/* Responsive Adjustments for Tablets/Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+  .dashboard-content {
+    flex-direction: column; /* Stack sidebar on top */
+    /* Removed width: 100vw; let it be natural */
+    overflow: visible; /* Allow content flow */
+  }
+  .sidebar {
+    width: 100%; /* Full width */
+    height: auto; /* Height based on content */
+    max-width: none; /* Remove max-width */
+    padding: 0.5rem; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Add separator */
+  }
+  .sidebar-btns {
+    flex-direction: row; /* Buttons side-by-side */
+    justify-content: center; /* Center buttons */
+    flex-wrap: wrap; /* Allow wrapping */
+    gap: 0.5rem; /* Smaller gap */
+  }
+  .menu-btn {
+     /* Allow buttons to take space but not necessarily full width */
+     flex-basis: 150px; /* Minimum base size */
+     flex-grow: 1;
+     justify-content: center;
+  }
+  .menu-btn span {
+    display: inline; /* Keep text visible */
+  }
+  .dashboard-main {
+     /* Let it take full width naturally */
+     padding: 1rem; /* Adjust padding */
+  }
+
+  /* Adjust FAB for smaller screens */
+  .fab {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 50px;
+    height: 50px;
+    font-size: 1.6rem;
+  }
+   /* Adjust Modal for smaller screens */
+  .modal-content {
+    width: 95%; /* Slightly wider */
+    padding: 1.5rem;
+    max-height: 85vh; /* Allow slightly more height */
+  }
+}
+
+/* Additional Responsive Adjustments for Very Small Screens (max-width: 480px) */
+@media (max-width: 480px) {
+  .top-logo {
+    width: 120px;
+  }
+  .back-btn,
+  .logout-btn {
+    font-size: 1.3rem; /* Smaller icons */
+    left: 0.8rem; /* Adjust position */
+    right: 0.8rem; /* Adjust position */
+  }
+  .sidebar-btns {
+    gap: 0.5rem;
+  }
+  .menu-btn {
+    font-size: 0.9rem; /* Smaller button text */
+    flex-basis: 120px; /* Smaller base size */
+    padding: 0.4rem;
+  }
+  .dashboard-main {
+    padding: 0.75rem; /* Less padding */
+  }
+  .user-row, .user-row-modal {
+     padding: 0.6rem 0.8rem; /* Less padding in rows */
+  }
+  .user-name {
+    font-size: 0.95rem; /* Slightly smaller name */
+  }
+  .chat-recent-message {
+    font-size: 0.8rem; /* Smaller recent message */
+  }
+
+  /* Adjust FAB for very small screens */
+  .fab {
+    bottom: 1rem;
+    right: 1rem;
+    width: 45px;
+    height: 45px;
+    font-size: 1.4rem;
+  }
+  /* Adjust Modal for very small screens */
+  .modal-content {
+    padding: 1.2rem; /* Less padding */
+  }
+  .modal-title {
+    font-size: 1.2rem; /* Smaller title */
+  }
+  .modal-close-btn {
+    font-size: 1.6rem;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+}
+
+/* Keep original delete icon styles if they were working */
+/* .delete-icon { ... } */
+/* .delete-icon:hover { ... } */
+
+/* In Dashboard.css or similar */
+.chat-row.archived-row-nonclickable {
+  cursor: default; /* Change cursor to show non-interactive */
+  background-color: #f8f8f8; /* Optional: Slightly different background */
+  /* Add other styles to make it look non-interactive if desired */
+}
+
+.chat-row.archived-row-nonclickable:hover {
+    background-color: #f8f8f8; /* Prevent hover effect if any */
+}

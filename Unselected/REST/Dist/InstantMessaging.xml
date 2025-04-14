@@ -1,0 +1,858 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InstantMessaging</name>
+    </assembly>
+    <members>
+        <member name="T:InstantMessaging.AppContext">
+            <summary>
+            App Db Context
+            </summary>
+        </member>
+        <member name="M:InstantMessaging.AppContext.#ctor">
+            <summary>
+            App Context Constructor
+            </summary>
+        </member>
+        <member name="M:InstantMessaging.AppContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{InstantMessaging.AppContext})">
+            <summary>
+            App Context Constructor
+            </summary>
+            <param name="options">DbContext Options</param>
+        </member>
+        <member name="P:InstantMessaging.AppContext.Messages">
+            <summary>
+            Messages
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.AppContext.Messagearchives">
+            <summary>
+            Message Archives
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.AppContext.Sessions">
+            <summary>
+            Sessions
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.AppContext.Sessionarchives">
+            <summary>
+            Session Archives
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.AppContext.Users">
+            <summary>
+            Users
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.AppContext.Usersessions">
+            <summary>
+            User Sessions
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.AppContext.Usersessionarchives">
+            <summary>
+            User Session Archives
+            </summary>
+        </member>
+        <member name="M:InstantMessaging.AppContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)">
+            <summary>
+            OnConfiguring
+            </summary>
+            <param name="optionsBuilder">builder</param>
+        </member>
+        <member name="M:InstantMessaging.AppContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            OnModelCreating
+            </summary>
+            <param name="modelBuilder"></param>
+        </member>
+        <member name="T:InstantMessaging.Controllers.Account">
+            <inheritdoc cref="T:InstantMessaging.Controllers.Interfaces.IAccount"/>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Account.#ctor(InstantMessaging.ICurrentUser,InstantMessaging.AppContext)">
+            <summary>
+            Constructor for the Account controller
+            </summary>
+            <param name="currentUser">Current User Context</param>
+            <param name="context">DB Context</param>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Account.LogOut">
+            <summary>
+            Removes the account from available users
+            </summary>
+            <returns>Number of records affected</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Account.ToggleStatus">
+            <summary>
+            Changes the user's online status
+            </summary>
+            <returns>Number of records affected</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Account.Details">
+            <summary>
+            Get all account details
+            </summary>
+            <returns>User object</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Account.Update(InstantMessaging.Model.User)">
+            <summary>
+            Update user's account details, supports updating Display Name, Picture, Email
+            </summary>
+            <param name="user">User object with all the data</param>
+            <returns>Number of rows affected</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Account.Remove">
+            <summary>
+            Delete user's account
+            </summary>
+            <returns>Number of records affected</returns>
+        </member>
+        <member name="T:InstantMessaging.Controllers.History">
+            <inheritdoc cref="T:InstantMessaging.Controllers.Interfaces.IHistory" />
+        </member>
+        <member name="M:InstantMessaging.Controllers.History.#ctor(InstantMessaging.ICurrentUser,InstantMessaging.AppContext)">
+            <summary>
+            Constructor for the History controller
+            </summary>
+            <param name="currentUser">Current User Context</param>
+            <param name="context">DB Context</param>
+        </member>
+        <member name="M:InstantMessaging.Controllers.History.HistoricalSessions">
+            <summary>
+            Get all historical sessions
+            </summary>
+            <returns>Array of sessions</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.History.RemoveSession(System.Int32)">
+            <summary>
+            Delete the session from active sessions, and moves it to archive
+            </summary>
+            <returns>Number of records affected</returns>
+        </member>
+        <member name="T:InstantMessaging.Controllers.Interfaces.IAccount">
+            <summary>
+            Interface for user account management
+            </summary>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Interfaces.IAccount.LogOut">
+            <summary>
+            Removes the users from available users
+            </summary>
+            <returns>Number of records affected</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Interfaces.IAccount.ToggleStatus">
+            <summary>
+            Changes the users online status
+            </summary>
+            <returns>Number of records affected</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Interfaces.IAccount.Details">
+            <summary>
+            Get all account details
+            </summary>
+            <returns>User object</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Interfaces.IAccount.Update(InstantMessaging.Model.User)">
+            <summary>
+            Update user's account details, supports updating Display Name, Picture, Email
+            </summary>
+            <param name="user">User object with all the data</param>
+            <returns>Number of rows affected</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Interfaces.IAccount.Remove">
+            <summary>
+            Delete user's account
+            </summary>
+            <returns>Number of records affected</returns>
+        </member>
+        <member name="T:InstantMessaging.Controllers.Interfaces.IHistory">
+            <summary>
+            Interface for the history controller
+            </summary>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Interfaces.IHistory.HistoricalSessions">
+            <summary>
+            Get all historical sessions
+            </summary>
+            <returns>Array of sessions</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Interfaces.IHistory.RemoveSession(System.Int32)">
+            <summary>
+            Delete the session from active sessions, and moves it to archive
+            </summary>
+            <returns>Number of records affected</returns>
+        </member>
+        <member name="T:InstantMessaging.Controllers.Interfaces.IMessages">
+            <summary>
+            Interface for message management
+            </summary>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Interfaces.IMessages.Create(InstantMessaging.Model.MessagePost)">
+            <summary>
+            Create a new message for given session
+            </summary>
+            <returns>Newly created Message object</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Interfaces.IMessages.Recent(System.Int32,System.Int32)">
+            <summary>
+            Get all new messages since last time for given session
+            </summary>
+            <param name="lastId">From what ID</param>
+            <param name="sessionId">Session ID</param>
+            <returns>Array of messages</returns>
+        </member>
+        <member name="T:InstantMessaging.Controllers.Interfaces.ISessions">
+            <summary>
+            Interface for Session management
+            </summary>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Interfaces.ISessions.Create(System.Int32)">
+            <summary>
+            Create a new session
+            </summary>
+            <param name="userId">Pass the user id with whom you wish to create session with</param>
+            <returns>Newly created Session object</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Interfaces.ISessions.Terminate(System.Int32)">
+            <summary>
+            Delete a session
+            </summary>
+            <param name="id">Session ID</param>
+            <returns>Number of records affected</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Interfaces.ISessions.Current">
+            <summary>
+            Get all current session the user belong to
+            </summary>
+            <returns>Array of Session objects</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Interfaces.ISessions.Recent(System.Int32)">
+            <summary>
+            Get all new session from the last session id
+            </summary>
+            <param name="lastId">Starting from what session id</param>
+            <returns>Array of Session objects</returns>
+        </member>
+        <member name="T:InstantMessaging.Controllers.Interfaces.IUsers">
+            <summary>
+            Interface for user management
+            </summary>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Interfaces.IUsers.RetrieveOrCreate">
+            <summary>
+            Create/Retrieves a user account, call this every time a user logs in
+            </summary>
+            <returns>User object</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Interfaces.IUsers.Current">
+            <summary>
+            Get all current users and their status
+            </summary>
+            <returns>Array of sessions</returns>
+        </member>
+        <member name="T:InstantMessaging.Controllers.Messages">
+            <inheritdoc cref="T:InstantMessaging.Controllers.Interfaces.IMessages" />
+        </member>
+        <member name="M:InstantMessaging.Controllers.Messages.#ctor(InstantMessaging.ICurrentUser,InstantMessaging.AppContext)">
+            <summary>
+            Constructor for the Messages controller
+            </summary>
+            <param name="currentUser">Current User Context</param>
+            <param name="context">DB Context</param>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Messages.Create(InstantMessaging.Model.MessagePost)">
+            <summary>
+            Create a new message for given session
+            </summary>
+            <returns>Newly created Message object</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Messages.Recent(System.Int32,System.Int32)">
+            <summary>
+            Get all new messages since last time for given session
+            </summary>
+            <param name="lastId">From what ID</param>
+            <param name="sessionId">Session ID</param>
+            <returns>Array of messages</returns>
+        </member>
+        <member name="T:InstantMessaging.Controllers.Sessions">
+            <inheritdoc cref="T:Microsoft.AspNetCore.Http.ISession" />
+        </member>
+        <member name="M:InstantMessaging.Controllers.Sessions.#ctor(InstantMessaging.ICurrentUser,InstantMessaging.AppContext)">
+            <summary>
+            Constructor for the Messages controller
+            </summary>
+            <param name="currentUser">Current User Context</param>
+            <param name="context">DB Context</param>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Sessions.Create(System.Int32)">
+            <summary>
+            Create a new session
+            </summary>
+            <param name="userId">Pass the user id with whom you wish to create session with</param>
+            <returns>Newly created Session object</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Sessions.Terminate(System.Int32)">
+            <summary>
+            Delete a session
+            </summary>
+            <param name="id">Session ID</param>
+            <returns>Number of records affected</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Sessions.Current">
+            <summary>
+            Get all current session the user belong to
+            </summary>
+            <returns>Array of Session objects</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Sessions.Recent(System.Int32)">
+            <summary>
+            Get all new session from the last session id
+            </summary>
+            <param name="lastId">Starting from what session id</param>
+            <returns>Array of Session objects</returns>
+        </member>
+        <member name="T:InstantMessaging.Controllers.Users">
+            <inheritdoc cref="T:InstantMessaging.Controllers.Interfaces.IUsers" />
+        </member>
+        <member name="M:InstantMessaging.Controllers.Users.#ctor(InstantMessaging.ICurrentUser,InstantMessaging.AppContext)">
+            <summary>
+            Constructor for the Users controller
+            </summary>
+            <param name="currentUser">Current User Context</param>
+            <param name="context">DB Context</param>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Users.RetrieveOrCreate">
+            <summary>
+            Create/Retrieves a user account, call this every time a user logs in
+            </summary>
+            <returns>User object</returns>
+        </member>
+        <member name="M:InstantMessaging.Controllers.Users.Current">
+            <summary>
+            Get all current users and their status
+            </summary>
+            <returns>Array of sessions</returns>
+        </member>
+        <member name="T:InstantMessaging.CurrentUser">
+            <summary>
+            Interface for the Current User
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.CurrentUser.UserName">
+            <inheritdoc/>
+        </member>
+        <member name="P:InstantMessaging.CurrentUser.Email">
+            <inheritdoc/>
+        </member>
+        <member name="P:InstantMessaging.CurrentUser.DisplayName">
+            <inheritdoc/>
+        </member>
+        <member name="M:InstantMessaging.CurrentUser.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor)">
+            <summary>
+            Constructor for the Current User
+            </summary>
+            <param name="h">Http Context Accessor</param>
+            <exception cref="T:System.Exception">throws exception if no claims have been received</exception>
+        </member>
+        <member name="T:InstantMessaging.EntityFramework.Message">
+            <summary>
+            Message entity
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Message.MessageId">
+            <summary>
+            MessageId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Message.SessionId">
+            <summary>
+            SessionId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Message.UserId">
+            <summary>
+            UserId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Message.Content">
+            <summary>
+            Content
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Message.CreatedOn">
+            <summary>
+            CreatedOn
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Message.IsRead">
+            <summary>
+            IsRead
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Message.Session">
+            <summary>
+            UserSession
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Message.User">
+            <summary>
+            User
+            </summary>
+        </member>
+        <member name="T:InstantMessaging.EntityFramework.Messagearchive">
+            <summary>
+            MessageArchive entity
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Messagearchive.MessageId">
+            <summary>
+            MessageId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Messagearchive.SessionId">
+            <summary>
+            SessionId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Messagearchive.Content">
+            <summary>
+            Content
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Messagearchive.CreatedOn">
+            <summary>
+            CreatedOn
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Messagearchive.UserId">
+            <summary>
+            UserId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Messagearchive.Session">
+            <summary>
+            Session Archives
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Messagearchive.User">
+            <summary>
+            User
+            </summary>
+        </member>
+        <member name="T:InstantMessaging.EntityFramework.Session">
+            <summary>
+            Session entity
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Session.SessionId">
+            <summary>
+            SessionId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Session.CreatedOn">
+            <summary>
+            CreatedOn
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Session.ModifiedOn">
+            <summary>
+            ModifiedOn
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Session.Usersessions">
+            <summary>
+            User Sessions
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Session.Messages">
+            <summary>
+            Messages
+            </summary>
+        </member>
+        <member name="T:InstantMessaging.EntityFramework.Sessionarchive">
+            <summary>
+            SessionArchive entity
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Sessionarchive.SessionId">
+            <summary>
+            SessionId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Sessionarchive.CreatedOn">
+            <summary>
+            CreatedOn
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Sessionarchive.ArchivedOn">
+            <summary>
+            ArchivedOn
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Sessionarchive.Messagearchives">
+            <summary>
+            Message Archives
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Sessionarchive.Usersessionarchives">
+            <summary>
+            User Session Archives
+            </summary>
+        </member>
+        <member name="T:InstantMessaging.EntityFramework.User">
+            <summary>
+            User entity
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.User.UserId">
+            <summary>
+            UserId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.User.Username">
+            <summary>
+            Username
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.User.DisplayName">
+            <summary>
+            Users
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.User.Email">
+            <summary>
+            Email
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.User.Status">
+            <summary>
+            Status
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.User.Picture">
+            <summary>
+            Picture
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.User.Active">
+            <summary>
+            Active
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.User.Messages">
+            <summary>
+            Messages
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.User.Messagearchives">
+            <summary>
+            Message Archives
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.User.Usersessionarchives">
+            <summary>
+            Sessions Archives
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.User.Usersessions">
+            <summary>
+            User Sessions
+            </summary>
+        </member>
+        <member name="T:InstantMessaging.EntityFramework.Usersession">
+            <summary>
+            UserSession entity
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Usersession.UserSessionId">
+            <summary>
+            UserSessionId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Usersession.UserId">
+            <summary>
+            UserId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Usersession.SessionId">
+            <summary>
+            SessionId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Usersession.CreatedOn">
+            <summary>
+            CreatedOn
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Usersession.Session">
+            <summary>
+            Sessions
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Usersession.User">
+            <summary>
+            Users
+            </summary>
+        </member>
+        <member name="T:InstantMessaging.EntityFramework.Usersessionarchive">
+            <summary>
+            UserSessionArchive entity
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Usersessionarchive.UserSessionId">
+            <summary>
+            UserSessionArchiveId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Usersessionarchive.UserId">
+            <summary>
+            UserId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Usersessionarchive.SessionId">
+            <summary>
+            SessionId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Usersessionarchive.CreatedOn">
+            <summary>
+            CreatedOn
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Usersessionarchive.Session">
+            <summary>
+            Session Archives
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.EntityFramework.Usersessionarchive.User">
+            <summary>
+            User
+            </summary>
+        </member>
+        <member name="T:InstantMessaging.ICurrentUser">
+            <summary>
+            Interface that stores the current user's information
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.ICurrentUser.UserName">
+            <summary>
+            Unique identifier for the user
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.ICurrentUser.Email">
+            <summary>
+            Stores the User's Email
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.ICurrentUser.DisplayName">
+            <summary>
+            User's Display Name
+            </summary>
+        </member>
+        <member name="T:InstantMessaging.Model.Interfaces.IMessage">
+            <summary>
+            Interface that defines the message model
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.IMessage.MessageId">
+            <summary>
+            Unique identifier for the message
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.IMessage.UserId">
+            <summary>
+            UserId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.IMessage.Content">
+            <summary>
+            Used to store the message content
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.IMessage.CreatedOn">
+            <summary>
+            When was the message sent
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.IMessage.IsRead">
+            <summary>
+            Has the message been read by the recipient
+            </summary>
+        </member>
+        <member name="T:InstantMessaging.Model.Interfaces.IMessagePost">
+            <summary>
+            Interface that defines the new message 
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.IMessagePost.UserId">
+            <summary>
+            UserId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.IMessagePost.Content">
+            <summary>
+            Used to store the message content
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.IMessagePost.SessionId">
+            <summary>
+            SessionId
+            </summary>
+        </member>
+        <member name="T:InstantMessaging.Model.Interfaces.ISession">
+            <summary>
+            Interface that defines the session model
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.ISession.SessionId">
+            <summary>
+            Unique identifier for Sessions 
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.ISession.CreatedOn">
+            <summary>
+            When the session was first created
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.ISession.ModifiedOn">
+            <summary>
+            When the session was last modified
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.ISession.Users">
+            <summary>
+            List of users associated with the session
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.ISession.Messages">
+            <summary>
+            List of messages associated with the session
+            </summary>
+        </member>
+        <member name="T:InstantMessaging.Model.Interfaces.IUser">
+            <summary>
+            Interface for User DTO
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.IUser.UserId">
+            <summary>
+            UserId
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.IUser.DisplayName">
+            <summary>
+            User's display name
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.IUser.UserName">
+            <summary>
+            User's nickname
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.IUser.Email">
+            <summary>
+            User's email address
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.IUser.Status">
+            <summary>
+            Indicates whether the user is online or offline
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.IUser.Picture">
+            <summary>
+            User's profile picture, optional
+            </summary>
+        </member>
+        <member name="P:InstantMessaging.Model.Interfaces.IUser.Active">
+            <summary>
+            User's account is active or not
+            </summary>
+        </member>
+        <member name="T:InstantMessaging.Model.Message">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.Message.MessageId">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.Message.UserId">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.Message.Content">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.Message.CreatedOn">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.Message.IsRead">
+            <inheritdoc />
+        </member>
+        <member name="T:InstantMessaging.Model.MessagePost">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.MessagePost.UserId">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.MessagePost.Content">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.MessagePost.SessionId">
+            <inheritdoc />
+        </member>
+        <member name="T:InstantMessaging.Model.Session">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.Session.SessionId">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.Session.CreatedOn">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.Session.ModifiedOn">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.Session.Users">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.Session.Messages">
+            <inheritdoc />
+        </member>
+        <member name="T:InstantMessaging.Model.User">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.User.UserId">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.User.UserName">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.User.Email">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.User.Status">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.User.Picture">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.User.Active">
+            <inheritdoc />
+        </member>
+        <member name="P:InstantMessaging.Model.User.DisplayName">
+            <inheritdoc />
+        </member>
+        <member name="T:InstantMessaging.SwaggerAuthorizeCheckOperationFilter">
+            <summary>
+            Extension of the operation filter for swagger
+            </summary>
+        </member>
+        <member name="M:InstantMessaging.SwaggerAuthorizeCheckOperationFilter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            Apply the operation filter for swagger
+            </summary>
+            <param name="operation"></param>
+            <param name="context"></param>
+        </member>
+    </members>
+</doc>

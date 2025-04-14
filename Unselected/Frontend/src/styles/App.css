@@ -1,0 +1,154 @@
+/* Global Reset & Body Styling */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+    background: linear-gradient(135deg, #2b225a, #4f44e0);
+    color: #fff;
+    height: 100%;
+    width: 100%;
+  }
+  
+  /* Container Styling for both pages */
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  /* Landing Page Styles */
+  .mychat-logo {
+    width: 200px;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+  
+  .welcome-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .text-muted {
+    color: #d1d1d1;
+    margin-bottom: 2rem;
+  }
+  
+  .button-group {
+    width: 100%;
+    max-width: 400px;
+    padding: 0 1rem;
+  }
+  
+  .button-group button {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 0.4rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+  }
+  
+  /* Primary Button */
+  .btn-primary {
+    background-color: #4f44e0;
+    color: #fff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #3e36b5;
+  }
+  
+  /* Outline Button */
+  .btn-outline-primary {
+    background-color: transparent;
+    border: 2px solid #fff;
+    color: #fff;
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: #4f44e0;
+  }
+  
+  /* Login Page Styles */
+  .login-form {
+    width: 100%;
+    max-width: 400px;
+    padding: 1rem;
+    background-color: #3e36b5;
+    border-radius: 0.5rem;
+  }
+  
+  .login-form h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .login-form label {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #3e36b5;
+    border-radius: 0.25rem;
+    background-color: #2b225a;
+    color: #fff;
+    box-sizing: border-box;
+  }
+  
+  .login-form input::placeholder {
+    color: #d1d1d1;
+  }
+  
+  .login-form button {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    background-color: #4f44e0;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .login-form button:hover {
+    background-color: #3e36b5;
+  }
+
+  /* GitHub Login Button Styles */
+.github-login-button {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: #24292e; /* GitHub's signature dark color */
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.github-login-button:hover {
+  background-color: #444;
+}
+
+/* GitHub Icon Styles */
+.github-icon {
+  width: 64px;
+  height: 64px;
+  margin-right: 0.5rem;
+}
+
+
+  
+    /* Chat Page Styles. a section exists per each page */

@@ -1,0 +1,125 @@
+/* src/styles/ChatPage.css */
+
+/* Chat Page Container */
+.chat-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: linear-gradient(135deg, #2b225a, #4f44e0);
+    color: #fff;
+}
+  
+/* Conversation Area */
+.conversation-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    margin-top: 10px;  /* Small gap below the Topbar */
+    margin-bottom: 80px; /* Space for the input area */
+}
+.message-bubble {
+    max-width: 75%;
+    padding: 0.75rem 1rem;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+.message-bubble.sent {
+    background-color: #4f44e0;
+    color: #fff;
+    align-self: flex-end;
+    margin-left: auto;
+}
+.message-bubble.received {
+    background-color: #e9ecef;
+    color: #000;
+    align-self: flex-start;
+    margin-right: auto;
+}
+.message-time {
+    display: block;
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-top: 0.5rem;
+    text-align: right;
+}
+  
+/* Message Input Area (Fixed Footer) */
+.message-input-area {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    background-color: transparent;
+}
+.input-container {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+.message-input {
+    flex: 1;
+    background-color: #3e36b5;
+    border: 1px solid #3e36b5;
+    color: #fff;
+    padding: 0.5rem;
+    resize: vertical;
+    transition: all 0.3s ease;
+}
+.message-input::placeholder {
+    color: #d1d1d1;
+}
+.message-input:focus {
+    outline: none;
+}
+.send-btn {
+    background-color: #4f44e0;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.send-btn:hover {
+    background-color: #3e36b5;
+}
+
+/* Additional styles for ChatMessageBubble */
+.sender-name {
+    font-size: 0.8rem;
+    color: #ccc;
+    margin-bottom: 0.2rem;
+}
+.message-meta {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-top: 0.5rem;
+}
+.read-icon {
+    font-size: 1rem;
+    color: #4caf50;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+    .message-input-area {
+      padding: 0.5rem;
+    }
+    .send-btn {
+      width: 45px;
+      height: 45px;
+      font-size: 1.3rem;
+    }
+}

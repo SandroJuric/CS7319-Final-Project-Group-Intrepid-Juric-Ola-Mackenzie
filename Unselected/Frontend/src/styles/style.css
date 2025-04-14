@@ -1,0 +1,123 @@
+/* Global Reset & Body Styling */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(135deg, #2b225a, #4f44e0);
+    color: #fff;
+  }
+  
+  /* Profile Main & Card */
+  .profile-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px);
+    padding: 0 2rem 2rem; /* Removed top padding to eliminate space below the TopBar */
+  }
+  
+  .profile-card {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    max-width: 600px;
+    width: 100%;
+  }
+  
+  .profile-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile-image-container {
+    margin-bottom: 1rem;
+  }
+  
+  .profile-pic {
+    width: 200px;         /* Increased size */
+    height: 200px;        /* Increased size */
+    object-fit: cover;
+    border: 3px solid #fff;
+    border-radius: 50%;   /* Ensures circular shape */
+  }
+  
+  .profile-details {
+    text-align: center;
+  }
+  
+  .profile-details label {
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  
+  .profile-details input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ccc;
+  }
+  
+  /* Footer Buttons */
+  .profile-footer {
+    background-color: transparent;
+    padding: 1rem;
+    width: 100%;
+    margin-top: 2rem;
+  }
+  
+  .footer-btns {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .menu-btn {
+    background-color: #fff;
+    color: #2b225a;
+    border: none;
+    border-radius: 0.4rem;
+    padding: 1.5rem 3rem;  /* Increased padding for bigger buttons */
+    font-size: 1.5rem;     /* Increased font size */
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .menu-btn:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .delete-btn {
+    background-color: #f44336;
+    color: #fff;
+  }
+  
+  .delete-btn:hover {
+    background-color: #d32f2f;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 576px) {
+    .profile-pic {
+      width: 150px;
+      height: 150px;
+    }
+    .username {
+      font-size: 1.2rem;
+    }
+  }
+  
+
+  /* 
+I wrote this CSS file to style my profile page. It includes a global reset, sets the overall layout, 
+and styles the profile card, image, details, and footer buttons. I also added responsive adjustments 
+to ensure the page looks great on smaller screens.
+*/

@@ -1,0 +1,650 @@
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\Owner\Documents\SA_Projects\CS7319_Project\7319\REST\Dist
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10400]
+      Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+warn: Microsoft.EntityFrameworkCore.Query[20504]
+      Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (8ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`modifiedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, `m`.`isRead`, `m`.`userId`
+      FROM `usersession` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `session` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `session` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersession` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `message` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`modifiedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, `m`.`isRead`, `m`.`userId`
+      FROM `usersession` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `session` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `session` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersession` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `message` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId` AS `UserId`, `u`.`username` AS `UserName`, `u`.`email` AS `Email`, `u`.`active` AS `Active`, `u`.`status` AS `Status`, `u`.`picture` AS `Picture`, `u`.`DisplayName`
+      FROM `user` AS `u`
+      WHERE `u`.`active` = 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId` AS `UserId`, `u`.`username` AS `UserName`, `u`.`email` AS `Email`, `u`.`active` AS `Active`, `u`.`status` AS `Status`, `u`.`picture` AS `Picture`, `u`.`DisplayName`
+      FROM `user` AS `u`
+      WHERE `u`.`active` = 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`modifiedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, `m`.`isRead`, `m`.`userId`
+      FROM `usersession` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `session` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `session` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersession` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `message` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`modifiedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, `m`.`isRead`, `m`.`userId`
+      FROM `usersession` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `session` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `session` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersession` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `message` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId` AS `UserId`, `u`.`username` AS `UserName`, `u`.`email` AS `Email`, `u`.`active` AS `Active`, `u`.`status` AS `Status`, `u`.`picture` AS `Picture`, `u`.`DisplayName`
+      FROM `user` AS `u`
+      WHERE `u`.`active` = 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId` AS `UserId`, `u`.`username` AS `UserName`, `u`.`email` AS `Email`, `u`.`active` AS `Active`, `u`.`status` AS `Status`, `u`.`picture` AS `Picture`, `u`.`DisplayName`
+      FROM `user` AS `u`
+      WHERE `u`.`active` = 1
+warn: Microsoft.EntityFrameworkCore.Query[20504]
+      Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`archivedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, TRUE, `m`.`userId`
+      FROM `usersessionarchive` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `sessionarchive` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `sessionarchive` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersessionarchive` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `messagearchive` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`archivedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, TRUE, `m`.`userId`
+      FROM `usersessionarchive` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `sessionarchive` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `sessionarchive` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersessionarchive` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `messagearchive` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`archivedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, TRUE, `m`.`userId`
+      FROM `usersessionarchive` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `sessionarchive` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `sessionarchive` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersessionarchive` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `messagearchive` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`modifiedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, `m`.`isRead`, `m`.`userId`
+      FROM `usersession` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `session` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `session` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersession` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `message` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`modifiedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, `m`.`isRead`, `m`.`userId`
+      FROM `usersession` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `session` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `session` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersession` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `message` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId` AS `UserId`, `u`.`username` AS `UserName`, `u`.`email` AS `Email`, `u`.`active` AS `Active`, `u`.`status` AS `Status`, `u`.`picture` AS `Picture`, `u`.`DisplayName`
+      FROM `user` AS `u`
+      WHERE `u`.`active` = 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId` AS `UserId`, `u`.`username` AS `UserName`, `u`.`email` AS `Email`, `u`.`active` AS `Active`, `u`.`status` AS `Status`, `u`.`picture` AS `Picture`, `u`.`DisplayName`
+      FROM `user` AS `u`
+      WHERE `u`.`active` = 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@__userId_1='0', @___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `t0`.`sessionId`, `t0`.`createdOn`, `t0`.`modifiedOn`, `t0`.`userId`, `t0`.`username`, `t0`.`email`, `t0`.`status`, `t0`.`picture`, `t0`.`active`, `t0`.`userId0`, `t0`.`username0`, `t0`.`email0`, `t0`.`status0`, `t0`.`picture0`, `t0`.`active0`, `t0`.`userSessionId`, `t0`.`userId1`, `t0`.`userSessionId0`, `t0`.`sessionId0`, `t0`.`userId2`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, `m`.`isRead`, `m`.`userId`
+      FROM (
+          SELECT `u`.`sessionId`, `u`.`createdOn`, `s`.`modifiedOn`, `u`.`userId`, `u0`.`username`, `u0`.`email`, `u0`.`status`, `u0`.`picture`, `u0`.`active`, `t`.`userId` AS `userId0`, `u2`.`username` AS `username0`, `u2`.`email` AS `email0`, `u2`.`status` AS `status0`, `u2`.`picture` AS `picture0`, `u2`.`active` AS `active0`, `u`.`userSessionId`, `u0`.`userId` AS `userId1`, `t`.`userSessionId` AS `userSessionId0`, `s`.`sessionId` AS `sessionId0`, `u2`.`userId` AS `userId2`
+          FROM `usersession` AS `u`
+          INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+          INNER JOIN (
+              SELECT `u1`.`userSessionId`, `u1`.`sessionId`, `u1`.`userId`
+              FROM `usersession` AS `u1`
+              WHERE `u1`.`userId` = @__userId_1
+          ) AS `t` ON `u`.`sessionId` = `t`.`sessionId`
+          INNER JOIN `session` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+          INNER JOIN `user` AS `u2` ON `t`.`userId` = `u2`.`userId`
+          WHERE `u0`.`username` = @___currentUser_UserName_0
+          LIMIT 1
+      ) AS `t0`
+      LEFT JOIN `message` AS `m` ON `t0`.`sessionId` = `m`.`sessionId`
+      ORDER BY `t0`.`userSessionId`, `t0`.`userId1`, `t0`.`userSessionId0`, `t0`.`sessionId0`, `t0`.`userId2`, `m`.`createdOn`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[@p0='2025-04-13T14:18:03.6840727-05:00' (DbType = DateTime), @p1='2025-04-13T14:18:03.6841045-05:00' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO `session` (`createdOn`, `modifiedOn`)
+      VALUES (@p0, @p1);
+      SELECT `sessionId`
+      FROM `session`
+      WHERE ROW_COUNT() = 1 AND `sessionId` = LAST_INSERT_ID();
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (24ms) [Parameters=[@p0='2025-04-13T14:18:03.7743697-05:00' (DbType = DateTime), @p1='1', @p2='0', @p3='2025-04-13T14:18:03.7935878-05:00' (DbType = DateTime), @p4='1', @p5='1'], CommandType='Text', CommandTimeout='30']
+      INSERT INTO `usersession` (`createdOn`, `sessionId`, `userId`)
+      VALUES (@p0, @p1, @p2);
+      SELECT `userSessionId`
+      FROM `usersession`
+      WHERE ROW_COUNT() = 1 AND `userSessionId` = LAST_INSERT_ID();
+      
+      INSERT INTO `usersession` (`createdOn`, `sessionId`, `userId`)
+      VALUES (@p3, @p4, @p5);
+      SELECT `userSessionId`
+      FROM `usersession`
+      WHERE ROW_COUNT() = 1 AND `userSessionId` = LAST_INSERT_ID();
+fail: Microsoft.EntityFrameworkCore.Update[10000]
+      An exception occurred in the database while saving changes for context type 'InstantMessaging.AppContext'.
+      Microsoft.EntityFrameworkCore.DbUpdateException: Could not save changes. Please configure your entity type accordingly.
+       ---> MySql.Data.MySqlClient.MySqlException (0x80004005): Cannot add or update a child row: a foreign key constraint fails (`instant_messager`.`usersession`, CONSTRAINT `FK_userSession_userId` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`))
+         at MySql.Data.MySqlClient.MySqlStream.ReadPacketAsync(Boolean execAsync)
+         at MySql.Data.MySqlClient.NativeDriver.GetResultAsync(Int32 affectedRow, Int64 insertedId, Boolean execAsync)
+         at MySql.Data.MySqlClient.Driver.GetResultAsync(Int32 statementId, Int32 affectedRows, Int64 insertedId, Boolean execAsync)
+         at MySql.Data.MySqlClient.Driver.NextResultAsync(Int32 statementId, Boolean force, Boolean execAsync)
+         at MySql.Data.MySqlClient.MySqlDataReader.NextResultAsync(Boolean execAsync, CancellationToken cancellationToken)
+         at MySql.Data.MySqlClient.MySqlDataReader.NextResultAsync(Boolean execAsync, CancellationToken cancellationToken)
+         at MySql.Data.MySqlClient.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, Boolean execAsync, CancellationToken cancellationToken)
+         at MySql.Data.MySqlClient.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, Boolean execAsync, CancellationToken cancellationToken)
+         at MySql.Data.MySqlClient.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, Boolean execAsync, CancellationToken cancellationToken)
+         at MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)
+         at MySql.Data.MySqlClient.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+         at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+         at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+         --- End of inner exception stack trace ---
+         at MySql.EntityFrameworkCore.Update.MySQLModificationCommandBatch.Execute(IRelationalConnection connection)
+         at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+         at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__112_0(DbContext _, ValueTuple`2 t)
+         at MySql.EntityFrameworkCore.Storage.Internal.MySQLExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+         at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+      Microsoft.EntityFrameworkCore.DbUpdateException: Could not save changes. Please configure your entity type accordingly.
+       ---> MySql.Data.MySqlClient.MySqlException (0x80004005): Cannot add or update a child row: a foreign key constraint fails (`instant_messager`.`usersession`, CONSTRAINT `FK_userSession_userId` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`))
+         at MySql.Data.MySqlClient.MySqlStream.ReadPacketAsync(Boolean execAsync)
+         at MySql.Data.MySqlClient.NativeDriver.GetResultAsync(Int32 affectedRow, Int64 insertedId, Boolean execAsync)
+         at MySql.Data.MySqlClient.Driver.GetResultAsync(Int32 statementId, Int32 affectedRows, Int64 insertedId, Boolean execAsync)
+         at MySql.Data.MySqlClient.Driver.NextResultAsync(Int32 statementId, Boolean force, Boolean execAsync)
+         at MySql.Data.MySqlClient.MySqlDataReader.NextResultAsync(Boolean execAsync, CancellationToken cancellationToken)
+         at MySql.Data.MySqlClient.MySqlDataReader.NextResultAsync(Boolean execAsync, CancellationToken cancellationToken)
+         at MySql.Data.MySqlClient.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, Boolean execAsync, CancellationToken cancellationToken)
+         at MySql.Data.MySqlClient.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, Boolean execAsync, CancellationToken cancellationToken)
+         at MySql.Data.MySqlClient.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, Boolean execAsync, CancellationToken cancellationToken)
+         at MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)
+         at MySql.Data.MySqlClient.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+         at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+         at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+         --- End of inner exception stack trace ---
+         at MySql.EntityFrameworkCore.Update.MySQLModificationCommandBatch.Execute(IRelationalConnection connection)
+         at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+         at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__112_0(DbContext _, ValueTuple`2 t)
+         at MySql.EntityFrameworkCore.Storage.Internal.MySQLExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+         at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+fail: Microsoft.AspNetCore.Server.IIS.Core.IISHttpServer[2]
+      Connection ID "18374686506246762383", Request ID "40006f90-0006-ff00-b63f-84710c7967bb": An unhandled exception was thrown by the application.
+      Microsoft.EntityFrameworkCore.DbUpdateException: Could not save changes. Please configure your entity type accordingly.
+       ---> MySql.Data.MySqlClient.MySqlException (0x80004005): Cannot add or update a child row: a foreign key constraint fails (`instant_messager`.`usersession`, CONSTRAINT `FK_userSession_userId` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`))
+         at MySql.Data.MySqlClient.MySqlStream.ReadPacketAsync(Boolean execAsync)
+         at MySql.Data.MySqlClient.NativeDriver.GetResultAsync(Int32 affectedRow, Int64 insertedId, Boolean execAsync)
+         at MySql.Data.MySqlClient.Driver.GetResultAsync(Int32 statementId, Int32 affectedRows, Int64 insertedId, Boolean execAsync)
+         at MySql.Data.MySqlClient.Driver.NextResultAsync(Int32 statementId, Boolean force, Boolean execAsync)
+         at MySql.Data.MySqlClient.MySqlDataReader.NextResultAsync(Boolean execAsync, CancellationToken cancellationToken)
+         at MySql.Data.MySqlClient.MySqlDataReader.NextResultAsync(Boolean execAsync, CancellationToken cancellationToken)
+         at MySql.Data.MySqlClient.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, Boolean execAsync, CancellationToken cancellationToken)
+         at MySql.Data.MySqlClient.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, Boolean execAsync, CancellationToken cancellationToken)
+         at MySql.Data.MySqlClient.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, Boolean execAsync, CancellationToken cancellationToken)
+         at MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)
+         at MySql.Data.MySqlClient.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+         at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+         at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+         --- End of inner exception stack trace ---
+         at MySql.EntityFrameworkCore.Update.MySQLModificationCommandBatch.Execute(IRelationalConnection connection)
+         at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+         at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__112_0(DbContext _, ValueTuple`2 t)
+         at MySql.EntityFrameworkCore.Storage.Internal.MySQLExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+         at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+         at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+         at Microsoft.EntityFrameworkCore.DbContext.SaveChanges()
+         at InstantMessaging.Controllers.Sessions.Create(Int32 userId) in C:\Users\jurics\source\repos\InstantMessaging\InstantMessaging\Controllers\Sessions.cs:line 61
+         at lambda_method110(Closure, Object, Object[])
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.SyncObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeActionMethodAsync()
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeNextActionFilterAsync()
+      --- End of stack trace from previous location ---
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+      --- End of stack trace from previous location ---
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+         at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+         at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+         at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+         at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+         at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+         at Microsoft.AspNetCore.Server.IIS.Core.IISHttpContextOfT`1.ProcessRequestAsync()
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`archivedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, TRUE, `m`.`userId`
+      FROM `usersessionarchive` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `sessionarchive` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `sessionarchive` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersessionarchive` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `messagearchive` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`archivedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, TRUE, `m`.`userId`
+      FROM `usersessionarchive` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `sessionarchive` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `sessionarchive` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersessionarchive` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `messagearchive` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`modifiedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, `m`.`isRead`, `m`.`userId`
+      FROM `usersession` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `session` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `session` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersession` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `message` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`modifiedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, `m`.`isRead`, `m`.`userId`
+      FROM `usersession` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `session` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `session` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersession` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `message` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId` AS `UserId`, `u`.`username` AS `UserName`, `u`.`email` AS `Email`, `u`.`active` AS `Active`, `u`.`status` AS `Status`, `u`.`picture` AS `Picture`, `u`.`DisplayName`
+      FROM `user` AS `u`
+      WHERE `u`.`active` = 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`modifiedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, `m`.`isRead`, `m`.`userId`
+      FROM `usersession` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `session` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `session` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersession` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `message` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId` AS `UserId`, `u`.`username` AS `UserName`, `u`.`email` AS `Email`, `u`.`active` AS `Active`, `u`.`status` AS `Status`, `u`.`picture` AS `Picture`, `u`.`DisplayName`
+      FROM `user` AS `u`
+      WHERE `u`.`active` = 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`modifiedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, `m`.`isRead`, `m`.`userId`
+      FROM `usersession` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `session` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `session` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersession` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `message` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId` AS `UserId`, `u`.`username` AS `UserName`, `u`.`email` AS `Email`, `u`.`active` AS `Active`, `u`.`status` AS `Status`, `u`.`picture` AS `Picture`, `u`.`DisplayName`
+      FROM `user` AS `u`
+      WHERE `u`.`active` = 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId` AS `UserId`, `u`.`username` AS `UserName`, `u`.`email` AS `Email`, `u`.`active` AS `Active`, `u`.`status` AS `Status`, `u`.`picture` AS `Picture`, `u`.`DisplayName`
+      FROM `user` AS `u`
+      WHERE `u`.`active` = 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`archivedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, TRUE, `m`.`userId`
+      FROM `usersessionarchive` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `sessionarchive` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `sessionarchive` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersessionarchive` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `messagearchive` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`modifiedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, `m`.`isRead`, `m`.`userId`
+      FROM `usersession` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `session` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `session` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersession` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `message` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`modifiedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, `m`.`isRead`, `m`.`userId`
+      FROM `usersession` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `session` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `session` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersession` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `message` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId` AS `UserId`, `u`.`username` AS `UserName`, `u`.`email` AS `Email`, `u`.`active` AS `Active`, `u`.`status` AS `Status`, `u`.`picture` AS `Picture`, `u`.`DisplayName`
+      FROM `user` AS `u`
+      WHERE `u`.`active` = 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId` AS `UserId`, `u`.`username` AS `UserName`, `u`.`email` AS `Email`, `u`.`active` AS `Active`, `u`.`status` AS `Status`, `u`.`picture` AS `Picture`, `u`.`DisplayName`
+      FROM `user` AS `u`
+      WHERE `u`.`active` = 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`modifiedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, `m`.`isRead`, `m`.`userId`
+      FROM `usersession` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `session` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `session` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersession` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `message` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId` AS `UserId`, `u`.`username` AS `UserName`, `u`.`email` AS `Email`, `u`.`active` AS `Active`, `u`.`status` AS `Status`, `u`.`picture` AS `Picture`, `u`.`DisplayName`
+      FROM `user` AS `u`
+      WHERE `u`.`active` = 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`modifiedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, `m`.`isRead`, `m`.`userId`
+      FROM `usersession` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `session` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `session` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersession` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `message` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId` AS `UserId`, `u`.`username` AS `UserName`, `u`.`email` AS `Email`, `u`.`active` AS `Active`, `u`.`status` AS `Status`, `u`.`picture` AS `Picture`, `u`.`DisplayName`
+      FROM `user` AS `u`
+      WHERE `u`.`active` = 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId`, `u`.`active`, `u`.`DisplayName`, `u`.`email`, `u`.`picture`, `u`.`status`, `u`.`username`
+      FROM `user` AS `u`
+      WHERE `u`.`username` = @___currentUser_UserName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@___currentUser_UserName_0='github|70110830' (Size = -1)], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`sessionId`, `u`.`createdOn`, `s0`.`modifiedOn`, `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`UserId`, `t`.`UserName`, `t`.`Email`, `t`.`Status`, `t`.`Picture`, `t`.`Active`, `t`.`userSessionId`, `t`.`userId0`, `m`.`messageId`, `m`.`content`, `m`.`createdOn`, `m`.`isRead`, `m`.`userId`
+      FROM `usersession` AS `u`
+      INNER JOIN `user` AS `u0` ON `u`.`userId` = `u0`.`userId`
+      INNER JOIN `session` AS `s` ON `u`.`sessionId` = `s`.`sessionId`
+      INNER JOIN `session` AS `s0` ON `u`.`sessionId` = `s0`.`sessionId`
+      LEFT JOIN (
+          SELECT `u1`.`userId` AS `UserId`, `u2`.`username` AS `UserName`, `u2`.`email` AS `Email`, `u2`.`status` AS `Status`, `u2`.`picture` AS `Picture`, `u2`.`active` AS `Active`, `u1`.`userSessionId`, `u2`.`userId` AS `userId0`, `u1`.`sessionId`
+          FROM `usersession` AS `u1`
+          INNER JOIN `user` AS `u2` ON `u1`.`userId` = `u2`.`userId`
+      ) AS `t` ON `s`.`sessionId` = `t`.`sessionId`
+      LEFT JOIN `message` AS `m` ON `s`.`sessionId` = `m`.`sessionId`
+      WHERE `u0`.`username` = @___currentUser_UserName_0
+      ORDER BY `u`.`userSessionId`, `u0`.`userId`, `s`.`sessionId`, `s0`.`sessionId`, `t`.`userSessionId`, `t`.`userId0`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT `u`.`userId` AS `UserId`, `u`.`username` AS `UserName`, `u`.`email` AS `Email`, `u`.`active` AS `Active`, `u`.`status` AS `Status`, `u`.`picture` AS `Picture`, `u`.`DisplayName`
+      FROM `user` AS `u`
+      WHERE `u`.`active` = 1
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
