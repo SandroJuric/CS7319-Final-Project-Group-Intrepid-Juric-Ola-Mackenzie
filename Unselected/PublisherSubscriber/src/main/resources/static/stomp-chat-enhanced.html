@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>STOMP Chat with Logs & Timestamps</title>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+  <style>
+    body { font-family: sans-serif; display: flex; gap: 20px; padding: 20px; background: #f0f0f0; }
+    .window { flex: 1; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1); }
+    .messages { height: 250px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; font-size: 0.95rem; }
+    input, button { width: 100%; padding: 8px; margin-top: 5px; font-size: 1rem; }
+    h3 { margin-bottom: 5px; }
+    .timestamp { color: #999; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+
+<div class="window" id="windowA">
+  <h3>Window A</h3>
+  <div class="messages" id="messagesA"></div>
+  <input type="text" id="queueA" placeholder="Queue name (e.g., /queue/mychat)">
+  <input type="text" id="inputA" placeholder="Type a message...">
+  <button onclick="sendMessage('A')">Send</button>
+</div>
+
+<div class="window" id="windowB">
+  <h3>Window B</h3>
+  <div class="messages" id="messagesB"></div>
+  <input type="text" id="queueB" placeholder="Queue name (e.g., /queue/mychat)">
+  <input type="text" id="inputB" placeholder="Type a message...">
+  <button onclick="sendMessage('B')">Send</button>
+</div>
+
+<script>
+  const socket = new WebSocket("ws://localhost:15674/ws");
+  const client = Stomp.over(socket);
+  const subscriptions = { A: null, B: null };
+  const queues = { A: "", B: "" };
+
+  client.connect("guest", "guest", () => {
+    console.log("✅ Connected to RabbitMQ STOMP");
+
+    document.getElementById("queueA").addEventListener("change", () => subscribeToQueue("A"));
+    document.getElementById("queueB").addEventListener("change", () => subscribeToQueue("B"));
+  });
+
+  function getTimestamp() {
+    return new Date().toLocaleTimeString();
+  }
+
+  function logMessage(id, msg) {
+    const container = document.getElementById("messages" + id);
+    container.innerHTML += msg;
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function subscribeToQueue(id) {
+    const queueInput = document.getElementById("queue" + id).value.trim();
+    queues[id] = queueInput;
+
+    if (subscriptions[id]) {
+      subscriptions[id].unsubscribe();
+    }
+
+    subscriptions[id] = client.subscribe(queueInput, (msg) => {
+      const ackInfo = `[ACK id: ${msg.headers['message-id']}]`;
+      logMessage(id, `<div><strong>Received:</strong> ${msg.body} <span class="timestamp">@ ${getTimestamp()}</span> ${ackInfo}</div>`);
+      msg.ack();
+    }, { ack: "client-individual" });
+
+    logMessage(id, `<div>🔗 Subscribed to <em>${queueInput}</em> <span class="timestamp">@ ${getTimestamp()}</span></div>`);
+  }
+
+  function sendMessage(fromId) {
+    const input = document.getElementById("input" + fromId);
+    const msg = input.value.trim();
+    const destQueue = queues[fromId];
+
+    if (!destQueue || !msg) return alert("Set a queue and type a message first.");
+
+    client.send(destQueue, {}, msg);
+    logMessage(fromId, `<div><strong>Sent:</strong> ${msg} <span class="timestamp">@ ${getTimestamp()}</span></div>`);
+    input.value = "";
+  }
+</script>
+
+</body>
+</html>

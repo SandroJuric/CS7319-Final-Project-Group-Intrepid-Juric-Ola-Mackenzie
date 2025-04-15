@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>STOMP Queue Chat</title>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+  <style>
+    body { font-family: sans-serif; display: flex; gap: 20px; padding: 20px; background: #f2f2f2; }
+    .window { flex: 1; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .messages { height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
+    input, button, select { margin-top: 5px; width: 100%; padding: 6px; font-size: 1rem; }
+    h3 { margin-bottom: 5px; }
+  </style>
+</head>
+<body>
+
+<div class="window" id="windowA">
+  <h3>Window A</h3>
+  <div class="messages" id="messagesA"></div>
+  <input type="text" id="queueA" placeholder="Queue name (e.g., /queue/myqueue)">
+  <input type="text" id="inputA" placeholder="Type a message...">
+  <button onclick="sendMessage('A')">Send</button>
+</div>
+
+<div class="window" id="windowB">
+  <h3>Window B</h3>
+  <div class="messages" id="messagesB"></div>
+  <input type="text" id="queueB" placeholder="Queue name (e.g., /queue/myqueue)">
+  <input type="text" id="inputB" placeholder="Type a message...">
+  <button onclick="sendMessage('B')">Send</button>
+</div>
+
+<script>
+  const socket = new WebSocket("ws://localhost:15674/ws");
+  const client = Stomp.over(socket);
+
+  const subscriptions = { A: null, B: null };
+  const queues = { A: "", B: "" };
+
+  client.connect("guest", "guest", () => {
+    console.log("Connected via STOMP");
+
+    document.getElementById("queueA").addEventListener("change", () => subscribeToQueue("A"));
+    document.getElementById("queueB").addEventListener("change", () => subscribeToQueue("B"));
+  });
+
+  function subscribeToQueue(id) {
+    const queueInput = document.getElementById("queue" + id).value.trim();
+    queues[id] = queueInput;
+
+    if (subscriptions[id]) {
+      subscriptions[id].unsubscribe();
+    }
+
+    subscriptions[id] = client.subscribe(queueInput, (msg) => {
+      const ackInfo = `[ACK for msg-id: ${msg.headers['message-id']}]`;
+      document.getElementById("messages" + id).innerHTML += `<div><strong>Received:</strong> ${msg.body} ${ackInfo}</div>`;
+      msg.ack();
+    }, { ack: "client-individual" });
+
+    document.getElementById("messages" + id).innerHTML += `<div>🔗 Subscribed to ${queueInput}</div>`;
+  }
+
+  function sendMessage(fromId) {
+    const input = document.getElementById("input" + fromId);
+    const msg = input.value.trim();
+    const destQueue = queues[fromId];
+
+    if (!destQueue || !msg) return alert("Set a queue and type a message first.");
+
+    client.send(destQueue, {}, msg);
+    document.getElementById("messages" + fromId).innerHTML += `<div><strong>Sent:</strong> ${msg}</div>`;
+    input.value = "";
+  }
+</script>
+
+</body>
+</html>

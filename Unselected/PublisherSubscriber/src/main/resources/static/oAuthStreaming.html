@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RabbitMQ Stream Replay Visualizer (OAuth)</title>
+  <script src="https://unpkg.com/@cloudamqp/amqp-client@0.11.1/index.min.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input, select, button { margin: 5px; padding: 5px; }
+    ul { list-style-type: none; padding-left: 0; max-height: 300px; overflow-y: scroll; }
+    li { background: #f4f4f4; margin-bottom: 5px; padding: 5px; }
+    .timestamp { color: #999; font-size: 0.8em; float: right; }
+  </style>
+</head>
+<body>
+<h1>RabbitMQ Stream Queue Replay Visualizer (OAuth Enabled)</h1>
+
+<div>
+  <label for="queueInput">Queue Name:</label>
+  <input type="text" id="queueInput" value="stream.chat.abc" />
+  <button onclick="setQueue()">Set Queue</button>
+</div>
+
+<div>
+  <label for="offsetSelect">Stream Offset:</label>
+  <select id="offsetSelect">
+    <option value="first">First</option>
+    <option value="last">Last</option>
+    <option value="next">Next</option>
+    <option value="offset">Numeric Offset</option>
+    <option value="timestamp">Timestamp (ms)</option>
+  </select>
+  <input type="text" id="offsetValue" placeholder="Enter offset or timestamp" style="width: 200px;" />
+  <button onclick="connect()">Connect</button>
+</div>
+
+<div>
+  <label for="msgInput">Message:</label>
+  <input type="text" id="msgInput" placeholder="Type a message" style="width: 300px;" />
+  <button onclick="sendMessage()">Send</button>
+</div>
+
+<div>
+  <h3>Received Messages (<span id="msgCount">0</span>):</h3>
+  <ul id="messageList"></ul>
+</div>
+
+<script>
+  let queueName = "stream.chat.abc";
+  let channel;
+  let messageCount = 0;
+
+  function setQueue() {
+    queueName = document.getElementById("queueInput").value.trim();
+    console.log("Queue set to:", queueName);
+  }
+
+  async function getOAuthToken() {
+    // Replace this with your actual OAuth provider and credentials
+    const resp = await fetch('https://your-auth-server.com/oauth/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        client_id: 'your-client-id',
+        client_secret: 'your-client-secret',
+        grant_type: 'client_credentials',
+        audience: 'rabbitmq'
+      })
+    });
+
+    const data = await resp.json();
+    return data.access_token;
+  }
+
+  async function connect() {
+    const offsetType = document.getElementById("offsetSelect").value;
+    const offsetVal = document.getElementById("offsetValue").value.trim();
+    let offsetHeader = offsetType;
+
+    if (offsetType === "offset" || offsetType === "timestamp") {
+      offsetHeader = parseInt(offsetVal, 10);
+      if (isNaN(offsetHeader)) {
+        alert("Invalid numeric offset or timestamp");
+        return;
+      }
+    }
+
+    try {
+      const token = await getOAuthToken();
+
+      const client = await amqp.connect("ws://localhost:15675/ws", {
+        username: "unused",
+        password: "unused",
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      });
+
+      channel = await client.channel();
+
+      await channel.consume(queueName, (msg) => {
+        const content = msg.bodyToString();
+        const timestamp = new Date().toLocaleTimeString();
+        const li = document.createElement("li");
+        li.innerHTML = `${content} <span class="timestamp">${timestamp}</span>`;
+        document.getElementById("messageList").appendChild(li);
+        messageCount++;
+        document.getElementById("msgCount").textContent = messageCount;
+      }, {
+        arguments: {
+          "x-queue-type": "stream",
+          "x-stream-offset": offsetHeader
+        }
+      });
+
+      console.log(`Connected to ${queueName} with offset:`, offsetHeader);
+    } catch (err) {
+      console.error("Connection error:", err);
+      alert("Failed to connect. Check console.");
+    }
+  }
+
+  async function sendMessage() {
+    const msg = document.getElementById("msgInput").value;
+    if (msg && channel) {
+      await channel.publish("", queueName, { body: msg });
+      document.getElementById("msgInput").value = "";
+    }
+  }
+</script>
+</body>
+</html>

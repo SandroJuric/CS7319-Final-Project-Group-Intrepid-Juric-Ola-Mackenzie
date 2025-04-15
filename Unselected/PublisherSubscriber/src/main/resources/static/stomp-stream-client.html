@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>STOMP Stream Queue Client</title>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 30px auto; background: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; }
+        .log { height: 250px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; background: #fff; margin-bottom: 10px; font-size: 0.95rem; }
+        input, button { width: 100%; padding: 10px; margin-top: 10px; font-size: 1rem; }
+        .timestamp { color: #999; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+<h2>STOMP Client for RabbitMQ Stream Queue</h2>
+
+<div class="log" id="log"></div>
+
+<input type="text" id="queueId" placeholder="Enter stream queue name (e.g. /queue/stream-example)">
+<input type="text" id="messageInput" placeholder="Type your message here...">
+<button onclick="sendMessage()">Send to Stream</button>
+
+<script>
+    let client;
+    let subscription;
+    let currentQueue = "";
+
+    const logEl = document.getElementById("log");
+
+    function log(msg) {
+      const time = new Date().toLocaleTimeString();
+      logEl.innerHTML += `<div><span class="timestamp">[${time}]</span> ${msg}</div>`;
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function connectAndSubscribe(queueId) {
+      const socket = new WebSocket("ws://localhost:15674/ws");
+      client = Stomp.over(socket);
+
+      client.connect("guest", "guest", () => {
+        log("✅ Connected to RabbitMQ");
+
+        subscription = client.subscribe(queueId, (msg) => {
+          log(`<strong>📥 Received:</strong> ${msg.body} <span class="timestamp">[ACK ${msg.headers['message-id']}]</span>`);
+          msg.ack();
+        }, {
+          ack: "client-individual",
+          "x-queue-type": "stream",
+          "x-stream-offset": "last" // or "first", "next", "offset:10"
+        });
+
+        log(`🔗 Subscribed to stream queue: <em>${queueId}</em>`);
+      }, (err) => {
+        log("❌ Connection error: " + err);
+      });
+    }
+
+    function sendMessage() {
+      const msg = document.getElementById("messageInput").value.trim();
+      const queueInput = document.getElementById("queueId").value.trim();
+
+      if (!client || !client.connected || queueInput !== currentQueue) {
+        if (subscription) subscription.unsubscribe();
+        currentQueue = queueInput;
+        connectAndSubscribe(queueInput);
+      }
+
+      if (msg && client && client.connected) {
+        client.send(queueInput, {
+          "x-queue-type": "stream"
+        }, msg);
+        log(`<strong>📤 Sent:</strong> ${msg}`);
+        document.getElementById("messageInput").value = "";
+      }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+com\cs7319\chat\chatengine\domain\SubscribedQueue.class
+com\cs7319\chat\chatengine\config\DynamicBeanCreator.class
+com\cs7319\chat\chatengine\controller\ChatEngine.class
+com\cs7319\chat\chatengine\broker\BrokerManager.class
+com\cs7319\chat\chatengine\broker\BrokerAdmin.class
+com\cs7319\chat\chatengine\config\ChatEngineConfigurator.class
+com\cs7319\chat\chatengine\config\MessageType.class
+com\cs7319\chat\chatengine\config\ChatEngineConfig.class
+com\cs7319\chat\chatengine\domain\ChatEngineUser.class
+com\cs7319\chat\chatengine\ChatengineApplication.class
+com\cs7319\chat\chatengine\domain\ChatEngineMessage.class
+com\cs7319\chat\chatengine\controller\ChatController.class
+com\cs7319\chat\chatengine\listener\SessionConnectedEvent.class
+com\cs7319\chat\chatengine\config\RabbitMQAdmin.class

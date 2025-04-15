@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RabbitMQ AMQP Stream Test</title>
+  <script src="https://unpkg.com/@cloudamqp/amqp-client@0.11.1/index.min.js"></script>
+</head>
+<body>
+<h1>RabbitMQ Stream Queue Test (AMQP over WebSocket)</h1>
+<input type="text" id="msgInput" placeholder="Type a message" />
+<button onclick="sendMessage()">Send</button>
+<ul id="messageList"></ul>
+
+<script>
+  const queueName = "stream.chat.abc";
+  let channel;
+
+  async function connect() {
+    try {
+      const client = await amqp.connect("ws://localhost:15675/ws", {
+        username: "guest",
+        password: "guest"
+      });
+
+      channel = await client.channel();
+
+      // Consume from the stream queue with offset control
+      await channel.consume(queueName, (msg) => {
+        const content = msg.bodyToString();
+        console.log("Received:", content);
+        const li = document.createElement("li");
+        li.textContent = content;
+        document.getElementById("messageList").appendChild(li);
+      }, {
+        arguments: {
+          "x-queue-type": "stream",
+          "x-stream-offset": "first" // change to 'last', offset number, or timestamp if needed
+        }
+      });
+
+      console.log("Connected and consuming from:", queueName);
+    } catch (err) {
+      console.error("Connection error:", err);
+    }
+  }
+
+  async function sendMessage() {
+    const msg = document.getElementById("msgInput").value;
+    if (msg && channel) {
+      await channel.publish("", queueName, { body: msg });
+      document.getElementById("msgInput").value = "";
+    }
+  }
+
+  connect();
+</script>
+</body>
+</html>

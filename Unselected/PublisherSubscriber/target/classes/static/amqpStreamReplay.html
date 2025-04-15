@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RabbitMQ Stream Test (AMQP over WebSocket)</title>
+  <script src="https://unpkg.com/@cloudamqp/amqp-client@0.11.1/index.min.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input, select, button { margin: 5px; padding: 5px; }
+    ul { list-style-type: none; padding-left: 0; }
+    li { background: #f4f4f4; margin-bottom: 5px; padding: 5px; }
+  </style>
+</head>
+<body>
+<h1>RabbitMQ Stream Queue Tester</h1>
+
+<div>
+  <label for="queueInput">Queue Name:</label>
+  <input type="text" id="queueInput" value="stream.chat.abc" />
+  <button onclick="setQueue()">Set Queue</button>
+</div>
+
+<div>
+  <label for="offsetSelect">Stream Offset:</label>
+  <select id="offsetSelect">
+    <option value="first">First</option>
+    <option value="last">Last</option>
+    <option value="next">Next</option>
+    <option value="offset">Numeric Offset</option>
+    <option value="timestamp">Timestamp (ms)</option>
+  </select>
+  <input type="text" id="offsetValue" placeholder="Enter offset value" style="width: 200px;" />
+  <button onclick="connect()">Connect</button>
+</div>
+
+<div>
+  <label for="msgInput">Message:</label>
+  <input type="text" id="msgInput" placeholder="Type a message" style="width: 300px;" />
+  <button onclick="sendMessage()">Send</button>
+</div>
+
+<div>
+  <h3>Received Messages:</h3>
+  <ul id="messageList"></ul>
+</div>
+
+<script>
+  let queueName = "stream.chat.abc";
+  let channel;
+
+  function setQueue() {
+    queueName = document.getElementById("queueInput").value.trim();
+    console.log("Queue set to:", queueName);
+  }
+
+  async function connect() {
+    const offsetType = document.getElementById("offsetSelect").value;
+    const offsetVal = document.getElementById("offsetValue").value.trim();
+    let offsetHeader = offsetType;
+
+    if (offsetType === "offset" || offsetType === "timestamp") {
+      offsetHeader = parseInt(offsetVal, 10);
+      if (isNaN(offsetHeader)) {
+        alert("Invalid numeric offset or timestamp");
+        return;
+      }
+    }
+
+    try {
+      const client = await amqp.connect("ws://localhost:15675/ws", {
+        username: "guest",
+        password: "guest"
+      });
+
+      channel = await client.channel();
+
+      await channel.consume(queueName, (msg) => {
+        const content = msg.bodyToString();
+        const li = document.createElement("li");
+        li.textContent = content;
+        document.getElementById("messageList").appendChild(li);
+      }, {
+        arguments: {
+          "x-queue-type": "stream",
+          "x-stream-offset": offsetHeader
+        }
+      });
+
+      console.log(`Connected to ${queueName} with offset:`, offsetHeader);
+    } catch (err) {
+      console.error("Connection error:", err);
+      alert("Failed to connect. Check console.");
+    }
+  }
+
+  async function sendMessage() {
+    const msg = document.getElementById("msgInput").value;
+    if (msg && channel) {
+      await channel.publish("", queueName, { body: msg });
+      document.getElementById("msgInput").value = "";
+    }
+  }
+</script>
+</body>
+</html>

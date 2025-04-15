@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>STOMP Stream Queue Test Client</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body>
+<h1>RabbitMQ STOMP Stream Queue Tester</h1>
+<div>
+    <label>Message to Send:</label>
+    <input type="text" id="messageInput" placeholder="Type your message here" />
+    <button onclick="sendMessage()">Send</button>
+</div>
+<div>
+    <h3>Received Messages:</h3>
+    <ul id="messages"></ul>
+</div>
+
+<script>
+    const socket = new SockJS('http://localhost:15674/stomp'); // RabbitMQ STOMP WebSocket endpoint
+    const stompClient = Stomp.over(socket);
+
+    stompClient.connect({
+      login: 'guest', // replace with your RabbitMQ user
+      passcode: 'guest' // replace with your RabbitMQ password
+    }, function (frame) {
+      console.log('Connected: ' + frame);
+
+      stompClient.subscribe('/queue/stream.chat.abc', function (message) {
+        const content = message.body;
+        console.log("Received:", content);
+        const li = document.createElement("li");
+        li.textContent = content;
+        document.getElementById("messages").appendChild(li);
+      }, {
+        'x-queue-type': 'stream',
+        'x-stream-offset': 'first',
+        'ack': 'auto',
+        'prefetch-count': '100'
+      });
+    });
+
+    function sendMessage() {
+      const msg = document.getElementById("messageInput").value;
+      stompClient.send("/queue/stream.chat.abc", {}, msg);
+      document.getElementById("messageInput").value = '';
+    }
+</script>
+</body>
+</html>
