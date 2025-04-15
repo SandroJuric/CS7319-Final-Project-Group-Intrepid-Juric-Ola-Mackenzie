@@ -39,8 +39,8 @@ const ChatRow = ({ session, onArchive, isArchivedPage }) => {
 
   // Build display string for participants. Needs currentUserId ideally, but fallback provided
   // Note: This simple join might not be ideal if currentUserId isn't passed down to filter self out.
-  const participants = session?.users?.map(user => user.userName || `User ${user.userId}`) || [];
-  const displayName = participants.join(', ') || `Session ${session?.sessionId || 'N/A'}`;
+  const participants = session?.users?.map(user => user.userName || ``) || [];
+  const displayName = participants.join('\'s Chat with ') || `Session ${session?.sessionId || 'N/A'}`;
 
   // Only display recent message if available.
   let recentMessage = null;
