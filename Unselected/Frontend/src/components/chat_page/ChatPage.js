@@ -18,9 +18,9 @@ const ChatPage = () => {
     // --- State ---
     const [messages, setMessages] = useState([]);
     const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(true); // For initial message load
-    const [isUserLoading, setIsUserLoading] = useState(true); // Separate loading state for user data
-    const [loggedInUserData, setLoggedInUserData] = useState(null); // <<< State to store logged-in user data
+    const [isLoadingMessages, setIsLoadingMessages] = useState(true); // Renamed for clarity
+    const [isUserLoading, setIsUserLoading] = useState(true);
+    const [loggedInUserData, setLoggedInUserData] = useState(null);
     const lastMessageIdRef = useRef(0);
     const pollingIntervalRef = useRef(null);
 
@@ -36,71 +36,94 @@ const ChatPage = () => {
                 headers: { Authorization: `Bearer ${token}` }
             };
         } catch (err) {
-            console.error("Error getting access token:", err);
+            console.error("ChatPage: Error getting access token:", err);
             setError("Authentication error. Please refresh or log in again.");
-            throw err;
+            // Ensure loading states are false if auth fails critically
+            setIsUserLoading(false);
+            setIsLoadingMessages(false);
+            throw err; // Re-throw to stop further execution in calling functions
         }
     }, [getAccessTokenSilently]);
 
     // --- Effect to Fetch Logged-in User Data ON MOUNT ---
     useEffect(() => {
         const fetchCurrentUser = async () => {
-            console.log("ChatPage: Attempting to fetch logged-in user account details...");
-            setIsUserLoading(true); // Start loading user data
-            setError(null); // Clear previous errors specific to user fetching
+            console.log("ChatPage: Mount effect - Checking session...");
+             // Redirect immediately if session is missing
+            if (!sessionFromState || !sessionId) {
+                console.log("ChatPage: No session state found on mount, redirecting to dashboard.");
+                navigate('/dashboard');
+                setIsUserLoading(false); // Stop loading if redirecting
+                return; // Stop this effect
+            }
+
+            console.log("ChatPage: Session valid, attempting to fetch logged-in user account details...");
+            setIsUserLoading(true);
+            setLoggedInUserData(null); // Reset user data on fetch attempt
+            setError(null); // Clear previous errors
+
             try {
-                const config = await getAuthConfig();
+                const config = await getAuthConfig(); // Get token first
+                console.log("ChatPage: Auth config obtained. Fetching /Account...");
+
                 // Assume GET /Account returns the current user based on the token
                 const response = await api.get('/Account', config);
+                console.log("ChatPage: /Account API Response Status:", response.status);
+                console.log("ChatPage: /Account API Response Data:", response.data); // Log the raw data
 
-                if (response.data && response.data.userId) { // Check if data and userId exist
-                    console.log("ChatPage: Logged-in user data received:", response.data);
+                // *** CRITICAL CHECK: Ensure data and userId exist ***
+                if (response.data && response.data.userId) {
+                    console.log("ChatPage: User ID found in response data:", response.data.userId);
                     setLoggedInUserData(response.data); // <<< Store user data in state
                 } else {
-                     // Handle cases where the API might return 200 OK but empty/invalid data
-                     console.error("ChatPage: Received empty or invalid user data from /Account", response.data);
-                     throw new Error("No valid user data received from /Account.");
+                    console.error("ChatPage: Received data from /Account, but 'userId' property is missing or invalid.", response.data);
+                    // Keep loggedInUserData as null
+                    throw new Error("User ID not found in account data."); // Throw error to be caught below
                 }
             } catch (err) {
-                console.error("Error fetching current user data:", err.response || err);
+                console.error("ChatPage: Error during fetchCurrentUser:", err.response || err);
                  let specificError = "Could not load your user details. Chat may not function correctly.";
-                 if (err.response?.status === 401) {
+                 if (err.message === "User ID not found in account data.") {
+                    specificError = "Received invalid user data structure from server.";
+                 } else if (err.response?.status === 401) {
                      specificError = "Authorization error fetching user details. Please log in again.";
                  } else if (err.response?.status === 404) {
-                      specificError = "User account not found on the server.";
+                     specificError = "User account not found on the server.";
                  }
-                setError(specificError);
-                setLoggedInUserData(null); // Ensure user data is null on error
-                // Potentially navigate away or disable chat input if user data is critical
+                 setError(specificError);
+                 setLoggedInUserData(null); // Ensure user data is null on error
             } finally {
+                console.log("ChatPage: fetchCurrentUser finished.");
                 setIsUserLoading(false); // Finish loading user data (success or fail)
             }
         };
 
-        // Redirect immediately if session is missing, before trying to fetch user
-        if (!sessionFromState || !sessionId) {
-             console.log("ChatPage: No session state found on mount, redirecting to dashboard.");
-             navigate('/dashboard');
-             return; // Stop this effect
-        }
-
         fetchCurrentUser(); // Call the fetch function
 
-    }, [getAuthConfig, navigate, sessionFromState, sessionId]); // Dependencies: run when auth config or session potentially changes
+        // Cleanup function for the effect (optional, but good practice for async)
+        return () => {
+            console.log("ChatPage: User fetch effect cleanup.");
+            // Potential cleanup if needed, e.g., aborting fetch requests
+        }
+
+    }, [getAuthConfig, navigate, sessionFromState, sessionId]); // Dependencies
 
 
     // --- Fetching Messages (dependent on loggedInUserData) ---
     const fetchMessages = useCallback(async (isInitialFetch = false) => {
-        // *** GUARD: Wait until we have the logged-in user's ID ***
+        // *** GUARD: Wait until we have the logged-in user's ID AND a valid session ***
         if (!sessionId || !loggedInUserData?.userId) {
-            console.log("ChatPage: Skipping message fetch - missing session or user ID.");
-            if (isInitialFetch) setIsLoading(false); // Ensure loading finishes if we can't fetch
+            console.log(`ChatPage: Skipping message fetch - missing session (${!!sessionId}) or user ID (${!!loggedInUserData?.userId}).`);
+            if (isInitialFetch) setIsLoadingMessages(false); // Ensure loading finishes if we can't fetch
             return;
         }
 
+        console.log(`ChatPage: Conditions met for fetching messages (User ID: ${loggedInUserData.userId}, Session: ${sessionId}, Initial: ${isInitialFetch})`);
+
         if (isInitialFetch) {
-            setIsLoading(true); // Loading state for messages
-            // Don't clear general error here, might be a user loading error
+            setIsLoadingMessages(true);
+            // Clear previous message-related errors on initial fetch
+            // setError(null); // Be cautious not to clear critical user errors
         }
 
         try {
@@ -108,7 +131,7 @@ const ChatPage = () => {
             const lastId = isInitialFetch ? 0 : lastMessageIdRef.current;
             const url = `/Messages/${lastId}/session/${sessionId}`;
 
-            console.log(`ChatPage: Fetching messages from ${url} (User ID: ${loggedInUserData.userId})`);
+            console.log(`ChatPage: Fetching messages from ${url}`);
             const response = await api.get(url, config);
             const newMessages = response.data || [];
 
@@ -117,61 +140,75 @@ const ChatPage = () => {
                 lastMessageIdRef.current = maxId;
                 console.log(`ChatPage: Fetched ${newMessages.length} new messages. New lastMessageId: ${maxId}`);
 
-                // Add senderName info if needed for display (assuming API only gives userId)
                 const findSenderName = (senderUserId) => {
+                    // Prioritize loggedInUserData if it matches
+                    if (senderUserId === loggedInUserData.userId) {
+                        return loggedInUserData.displayName || loggedInUserData.userName || `User ${senderUserId}`;
+                    }
+                    // Look in session participants otherwise
                     const sender = sessionFromState?.users?.find(u => u.userId === senderUserId);
-                    return sender?.displayName || sender?.userName || `User ${senderUserId}`;
+                    return sender?.displayName || sender?.userName || `User ${senderUserId}`; // Fallback
                 };
 
                 const messagesWithSenderInfo = newMessages.map(msg => ({
                     ...msg,
-                    senderName: msg.userId === loggedInUserData.userId
-                        ? (loggedInUserData.displayName || loggedInUserData.userName) // Use current user's name
-                        : findSenderName(msg.userId) // Find name for others
+                    senderName: findSenderName(msg.userId) // Use the helper
                 }));
+
+                // Log the first message with sender info for verification
+                if (messagesWithSenderInfo.length > 0) {
+                     console.log("ChatPage: Example message object with senderName:", messagesWithSenderInfo[0]);
+                }
+
 
                 if (isInitialFetch) {
                     setMessages(messagesWithSenderInfo);
                 } else {
                     setMessages(prevMessages => [...prevMessages, ...messagesWithSenderInfo]);
                 }
-                 // Clear message-specific errors on success
-                 // Avoid clearing user-loading errors here
-                 // setError(null);
+                // Clear non-critical errors if messages are successfully fetched
+                 if (error && error.startsWith("Error fetching messages")) {
+                     setError(null);
+                 }
+
             } else {
                  console.log(`ChatPage: No new messages found.`);
+                 // Clear transient message fetch errors if no new messages arrive
+                 if (error && error.startsWith("Error fetching messages")) {
+                     setError(null);
+                 }
             }
 
         } catch (err) {
-             // Handle message fetching errors (distinct from user fetching errors)
-            console.error("Error fetching messages:", err.response || err);
-             let specificError = "Error fetching messages.";
+            console.error("ChatPage: Error fetching messages:", err.response || err);
+            let specificError = "Error fetching messages.";
              if (err.response?.status === 401) {
-                specificError = "Authorization failed fetching messages. Please refresh or log in again.";
+                 specificError = "Authorization failed fetching messages. Please refresh or log in again.";
              } else if (err.response?.status === 404) {
-                specificError = "Message history not found for this session.";
+                 specificError = "Message history not found for this session.";
              }
-             // Set error, but be careful not to overwrite a critical user-loading error
-             if (!error || err.response?.status === 401) { // Prioritize auth errors or set if no error exists
-                setError(specificError);
+            // Set error, but be careful not to overwrite a critical user-loading error
+             if (!error || err.response?.status === 401) {
+                 setError(specificError);
              }
         } finally {
-            if (isInitialFetch) setIsLoading(false); // Finish message loading state
+            if (isInitialFetch) setIsLoadingMessages(false); // Finish message loading state
         }
-    }, [sessionId, getAuthConfig, loggedInUserData, sessionFromState?.users]); // Depends on user data now
+    }, [sessionId, getAuthConfig, loggedInUserData, sessionFromState?.users, error]); // Added error dependency
 
 
     // --- Effect for Initial Message Fetch and Polling Setup ---
     useEffect(() => {
-        // *** GUARD: Wait until user data is loaded and valid before starting polling ***
+        // *** GUARD: Wait until user data is loaded successfully before starting polling ***
         if (isUserLoading || !loggedInUserData?.userId || !sessionId) {
-             console.log("ChatPage: Waiting for user data or session before starting message polling...");
-             // Clear any existing interval if user becomes invalid
-             if (pollingIntervalRef.current) {
-                  clearInterval(pollingIntervalRef.current);
-                  pollingIntervalRef.current = null;
-             }
-             return;
+            console.log(`ChatPage: Polling setup waiting - isUserLoading: ${isUserLoading}, hasUserData: ${!!loggedInUserData?.userId}, hasSessionId: ${!!sessionId}`);
+            // Clear any existing interval if conditions become invalid
+            if (pollingIntervalRef.current) {
+                clearInterval(pollingIntervalRef.current);
+                pollingIntervalRef.current = null;
+                console.log("ChatPage: Cleared existing polling interval.");
+            }
+            return; // Don't proceed
         }
 
         console.log(`ChatPage: User data loaded (ID: ${loggedInUserData.userId}). Initializing message fetch & polling for session: ${sessionId}`);
@@ -183,123 +220,156 @@ const ChatPage = () => {
         }
 
         // Set up polling
+        console.log("ChatPage: Setting up polling interval.");
         pollingIntervalRef.current = setInterval(() => {
+            console.log("ChatPage: Polling for new messages...");
             fetchMessages(false);
         }, POLLING_INTERVAL);
 
         // Cleanup function
         return () => {
-            console.log("ChatPage: Cleaning up interval for session:", sessionId);
+            console.log("ChatPage: Cleaning up polling interval for session:", sessionId);
             if (pollingIntervalRef.current) {
                 clearInterval(pollingIntervalRef.current);
+                pollingIntervalRef.current = null;
             }
         };
-        // Rerun if session/user changes
+        // Rerun if session/user changes, or fetchMessages logic changes
     }, [sessionId, fetchMessages, loggedInUserData, isUserLoading]); // Depends on user loading state and data
 
 
     // --- Sending Messages (dependent on loggedInUserData) ---
     const handleSendMessage = async (newMsgContent) => {
-        const trimmedMessage = newMsgContent.trim();
-        // *** GUARD: Ensure we have user data before sending ***
-        if (!trimmedMessage || !sessionId || !loggedInUserData?.userId) {
-            console.warn("ChatPage: Cannot send message, missing session or user data.");
-            setError("Cannot send message. User data not loaded correctly.");
-            return;
-        }
-        setError(null); // Clear previous send errors
+         const trimmedMessage = newMsgContent.trim();
+         // *** GUARD: Ensure we have user data AND session before sending ***
+         if (!trimmedMessage || !sessionId || !loggedInUserData?.userId) {
+             console.warn("ChatPage: Cannot send message, missing session or user data.");
+             setError("Cannot send message. User data not loaded correctly.");
+             return;
+         }
+         // Clear previous non-critical errors before sending
+         if (error && !error.toLowerCase().includes("user")) {
+             setError(null);
+         }
 
-        const optimisticMessage = {
-            messageId: `optimistic-${Date.now()}`, // Temporary ID for React key
-            userId: loggedInUserData.userId,        // Use logged-in user's ID
-            content: trimmedMessage,
-            createdOn: new Date().toISOString(),
-            isRead: false,
-            senderName: loggedInUserData.displayName || loggedInUserData.userName // Use logged-in user's name
-        };
 
-        setMessages(prevMessages => [...prevMessages, optimisticMessage]);
+         const optimisticMessage = {
+             messageId: `optimistic-${Date.now()}`,
+             userId: loggedInUserData.userId,
+             content: trimmedMessage,
+             createdOn: new Date().toISOString(),
+             isRead: false,
+             // Ensure senderName uses the correct fields from loggedInUserData
+             senderName: loggedInUserData.displayName || loggedInUserData.userName || `User ${loggedInUserData.userId}`
+         };
 
-        try {
-            const config = await getAuthConfig();
-            const payload = { sessionId: sessionId, content: trimmedMessage };
-            config.headers['Content-Type'] = 'application/json';
+         console.log("ChatPage: Adding optimistic message:", optimisticMessage);
+         setMessages(prevMessages => [...prevMessages, optimisticMessage]);
 
-            console.log("ChatPage: Sending message payload:", payload);
-            const response = await api.post('/Messages', payload, config);
+         try {
+             const config = await getAuthConfig();
+             const payload = { sessionId: sessionId, content: trimmedMessage };
+             config.headers['Content-Type'] = 'application/json';
 
-            if (response.status === 201 && response.data) {
-                 const newMessageFromServer = response.data;
+             console.log("ChatPage: Sending message payload:", payload);
+             const response = await api.post('/Messages', payload, config);
+
+             if (response.status === 201 && response.data?.messageId) { // Check for messageId in response
+                  const newMessageFromServer = {
+                      ...response.data,
+                      // Add senderName again based on loggedInUserData
+                      senderName: loggedInUserData.displayName || loggedInUserData.userName || `User ${loggedInUserData.userId}`
+                  };
                  console.log("ChatPage: Message sent successfully, server response:", newMessageFromServer);
-                 // Replace optimistic message with server version
                  setMessages(prevMessages => prevMessages.map(msg =>
                      msg.messageId === optimisticMessage.messageId
-                         ? { ...newMessageFromServer, senderName: loggedInUserData.displayName || loggedInUserData.userName }
+                         ? newMessageFromServer // Replace with full server message + senderName
                          : msg
                  ));
                  lastMessageIdRef.current = Math.max(lastMessageIdRef.current, newMessageFromServer.messageId || 0);
-            } else {
+             } else {
+                 console.error("ChatPage: Failed to send message or invalid response data.", response);
                  throw new Error(`Failed to send message. Status: ${response.status}`);
-            }
-        } catch (err) {
-             console.error("Error sending message:", err.response || err);
+             }
+         } catch (err) {
+             console.error("ChatPage: Error sending message:", err.response || err);
              let specificError = "Error sending message.";
              if (err.response?.status === 401) specificError = "Authorization failed sending message.";
              else if (err.response?.status === 400) specificError = "Invalid message data.";
              setError(specificError);
              // Remove the optimistic message on failure
              setMessages(prevMessages => prevMessages.filter(msg => msg.messageId !== optimisticMessage.messageId));
-        }
+         }
     };
+
 
     // --- Render Logic ---
 
-    // Show loading state while fetching user data
+    // 1. Still loading the essential user data?
     if (isUserLoading) {
-        return (
-             <div className="chat-page">
-                  <Topbar />
-                  <div className="loading-msg-chat">Loading user details...</div>
-             </div>
-        );
-    }
-
-     // Show error if user data failed to load and we cannot proceed
-     if (!loggedInUserData && error) {
-          return (
-               <div className="chat-page">
-                    <Topbar />
-                    <div className="error-msg chat-error">{error}</div>
-                    {/* Optionally add a retry button or link to login */}
-               </div>
-          );
-     }
-
-     // Show loading state for initial messages (after user is loaded)
-     if (isLoading && messages.length === 0 && !error) {
+        console.log("ChatPage: Rendering - State: Loading User Details");
         return (
             <div className="chat-page">
                 <Topbar />
-                <div className="loading-msg-chat">Loading messages...</div>
+                <div className="loading-msg-chat">Loading user details...</div>
             </div>
         );
     }
 
-    // Main render - ready to chat (or show errors that occurred after user load)
+    // 2. Failed to load essential user data? (Check loggedInUserData directly)
+    //    This is the CRITICAL gate before rendering the chat interface.
+    if (!loggedInUserData) {
+        console.log("ChatPage: Rendering - State: Failed to load User Data");
+        return (
+            <div className="chat-page">
+                <Topbar />
+                <div className="error-msg chat-error">
+                   {error || "Failed to load user information. Cannot display chat."}
+                </div>
+            </div>
+        );
+    }
+
+    // --- At this point, we know: ---
+    // - isUserLoading is false
+    // - loggedInUserData is definitely set (contains at least userId)
+
+    // 3. Show loading state for initial messages (if needed)
+    if (isLoadingMessages && messages.length === 0) {
+        console.log("ChatPage: Rendering - State: Loading Initial Messages");
+        return (
+            <div className="chat-page">
+                <Topbar />
+                {/* Render conversation area with a loading overlay/message */}
+                <main className="conversation-area">
+                     {/* You could render shell/placeholder bubbles here */}
+                     <div className="loading-msg-chat overlaid">Loading messages...</div>
+                </main>
+                <ChatInput
+                     onSend={handleSendMessage}
+                     disabled={true} // Disable while loading messages
+                />
+            </div>
+        );
+    }
+
+    // 4. Main render - Ready to chat (or show non-critical errors)
+    console.log(`ChatPage: Rendering - State: Chat Ready (User ID: ${loggedInUserData.userId}, Messages: ${messages.length})`);
     return (
         <div className="chat-page">
             <Topbar />
-            {/* Display general errors (like message fetch/send errors) */}
-            {error && <div className="error-msg chat-error">{error}</div>}
+            {/* Display non-critical errors (e.g., message fetch/send errors AFTER initial load) */}
+            {error && !error.toLowerCase().includes("user") && <div className="error-msg chat-error">{error}</div>}
 
             <ChatConversation
                 messages={messages}
-                loggedInUserId={loggedInUserData?.userId} // Pass the ID
+                currentUserId={loggedInUserData.userId} // Pass the ID - we know it exists now
             />
-             {/* Disable input if loggedInUserData is somehow still null (shouldn't happen if guards work) */}
             <ChatInput
                 onSend={handleSendMessage}
-                disabled={!loggedInUserData?.userId}
+                // Disable input if message loading is still happening (e.g., polling slow)
+                // or if there was a critical user error somehow missed (belt-and-suspenders)
+                disabled={isLoadingMessages || !loggedInUserData?.userId}
             />
         </div>
     );
