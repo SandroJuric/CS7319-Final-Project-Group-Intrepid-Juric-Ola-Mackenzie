@@ -20,7 +20,7 @@ const NewChatModal = ({ users, onSelectUser, onClose }) => {
             {/* Map through the available users passed as props */}
             {users.map((user) => (
               <div 
-                key={user.userId} 
+                key={user.userName} 
                 className="user-row-modal" 
                 onClick={() => onSelectUser(user)} // Call the handler passed from DashboardPage
                 role="button" // Indicate it's clickable
@@ -28,7 +28,7 @@ const NewChatModal = ({ users, onSelectUser, onClose }) => {
                 onKeyDown={(e) => e.key === 'Enter' && onSelectUser(user)} // Allow Enter key selection
               >
                 {/* Display the user's email (or name if you add it later) */}
-                <span className="user-name">{user.email || 'Unknown User'}</span>
+                <span className="user-name">{user.userName || 'Unknown User'}</span>
               </div>
             ))}
           </div>
